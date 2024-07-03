@@ -1,4 +1,4 @@
-package PreparingSteps.DataBase;
+package preparingSteps.dataBase;
 
 public class ExecutionRequest {
 }
