@@ -1,6 +1,6 @@
-package Model.Requests;
+package model.requests;
 
-import Entity.Author;
+import entity.Author;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;

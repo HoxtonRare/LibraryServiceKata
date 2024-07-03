@@ -1,11 +1,10 @@
 package LibraryService;
 
-import Entity.Author;
-import Entity.Book;
-import Model.Requests.RequestGetAuthorBooksXML;
-import Model.Requests.RequestGetAuthorsBooks;
-import Model.Responses.ResponseGetAuthorsBooks;
-import PreparingSteps.Requests.RequestSender;
+import entity.Author;
+import entity.Book;
+import model.requests.RequestGetAuthorBooksXML;
+import model.requests.RequestGetAuthorsBooks;
+import preparingSteps.requests.RequestSender;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;

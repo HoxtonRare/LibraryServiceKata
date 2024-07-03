@@ -1,8 +1,7 @@
-package Model.Responses;
+package model.responses;
 
-import Entity.Author;
+import entity.Author;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,22 +10,15 @@ import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-@XmlRootElement(name = "authors_books")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class ResponseGetAuthorBooksXML {
+public class ResponseGetAuthorsBooks {
     private int errorCode;
     private String errorMessage;
     private String errorDetails;
-    @XmlElement(name = "book")
-    @XmlElementWrapper
     private List<Book> books;
 
     @Data
-    @XmlRootElement(name = "book")
-    @XmlAccessorType(XmlAccessType.FIELD)
     public class Book {
         private long id;
-        @XmlElement(name = "book_title")
         private String bookTitle;
         private Author author;
     }

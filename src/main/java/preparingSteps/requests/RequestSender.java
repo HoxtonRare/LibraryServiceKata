@@ -1,9 +1,9 @@
-package PreparingSteps.Requests;
+package preparingSteps.requests;
 
-import Model.Requests.RequestGetAuthorBooksXML;
-import Model.Requests.RequestGetAuthorsBooks;
-import Model.Requests.RequestPostNewAuthor;
-import Model.Requests.RequestPostNewBook;
+import model.requests.RequestGetAuthorBooksXML;
+import model.requests.RequestGetAuthorsBooks;
+import model.requests.RequestPostNewAuthor;
+import model.requests.RequestPostNewBook;
 import io.restassured.response.Response;
 
 import static io.restassured.RestAssured.given;

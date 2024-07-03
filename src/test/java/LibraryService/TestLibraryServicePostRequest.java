@@ -1,8 +1,8 @@
 package LibraryService;
 
-import Entity.Author;
-import Model.Requests.RequestPostNewBook;
-import PreparingSteps.Requests.RequestSender;
+import entity.Author;
+import model.requests.RequestPostNewBook;
+import preparingSteps.requests.RequestSender;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;

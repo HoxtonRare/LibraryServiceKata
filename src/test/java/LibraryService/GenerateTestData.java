@@ -1,14 +1,12 @@
 package LibraryService;
 
-import Entity.Author;
-import Entity.Book;
-import Model.Requests.RequestGetAuthorsBooks;
-import Model.Requests.RequestPostNewAuthor;
-import Model.Requests.RequestPostNewBook;
-import Model.Responses.ResponseGetAuthorsBooks;
-import Model.Responses.ResponsePostNewAuthor;
-import Model.Responses.ResponsePostNewBook;
-import PreparingSteps.Requests.RequestSender;
+import entity.Author;
+import entity.Book;
+import model.requests.RequestPostNewAuthor;
+import model.requests.RequestPostNewBook;
+import model.responses.ResponsePostNewAuthor;
+import model.responses.ResponsePostNewBook;
+import preparingSteps.requests.RequestSender;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
