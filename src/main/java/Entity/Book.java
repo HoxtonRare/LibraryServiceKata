@@ -1,12 +1,16 @@
 package Entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "book")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,4 +21,5 @@ public class Book {
     @ManyToOne
     @Column(name = "author_id", nullable = false)
     private Author author;
+
 }

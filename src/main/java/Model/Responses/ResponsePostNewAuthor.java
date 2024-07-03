@@ -2,12 +2,14 @@ package Model.Responses;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class ResponsePostNewAuthor {
-    private long authorsId;
+    private long authorId;
     private int errorCode;
     private String errorMessage;
     private String errorDetails;
