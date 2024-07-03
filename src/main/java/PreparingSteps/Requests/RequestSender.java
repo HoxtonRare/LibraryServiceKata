@@ -23,14 +23,14 @@ public class RequestSender {
                 .get();
     }
 
-    public static Response ResponsePostAuthor(RequestPostNewAuthor request) {
+    public static Response responsePostAuthor(RequestPostNewAuthor request) {
         return given()
                 .spec(RequestBuilder.postAuthorSpec(request))
                 .when()
                 .post();
     }
 
-    public static Response ResponsePostBook(RequestPostNewBook request) {
+    public static Response responsePostBook(RequestPostNewBook request) {
         return given()
                 .spec(RequestBuilder.postAuthorBookSpec(request))
                 .when()
