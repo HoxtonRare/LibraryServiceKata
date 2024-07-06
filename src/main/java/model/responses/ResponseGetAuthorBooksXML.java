@@ -3,9 +3,7 @@ package model.responses;
 import entity.Author;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.xml.bind.annotation.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -20,11 +18,12 @@ public class ResponseGetAuthorBooksXML {
     @XmlElement(name = "book")
     @XmlElementWrapper
     private List<Book> books;
+    private int statusCode;
 
     @Data
     @XmlRootElement(name = "book")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public class Book {
+    public static class Book {
         private long id;
         @XmlElement(name = "book_title")
         private String bookTitle;

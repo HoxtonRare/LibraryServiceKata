@@ -2,6 +2,7 @@ package LibraryService;
 
 import entity.Author;
 import model.requests.RequestPostNewBook;
+import model.responses.ResponsePostNewBook;
 import preparingSteps.requests.RequestSender;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -10,7 +11,8 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static LibraryService.GenerateTestData.*;
+import static preparingSteps.asserts.PostLibraryEndPoint.checkStatusCodePostBook;
+import static preparingSteps.dataBase.GenerateTestData.*;
 import static junit.framework.Assert.assertEquals;
 
 @Epic("Получение статус кодов на запрос POST")
@@ -20,12 +22,12 @@ public class TestLibraryServicePostRequest {
 
     @Test
     @DisplayName("Статус-код, при добавлении новой книги с существующим Author id")
-    @Description("Проверка того, что при вводе существующего author id и корректного bookTitle в post запрос, будет выдаваться 200 статус-код")
+    @Description("Получен код 201, книга добавлена")
     public void testStatusCodePutAuthorsBookWithCorrectData() {
         Author author = generateNewAuthor();
         String bookTitle = generateBookTitle();
+        ResponsePostNewBook actual = RequestSender.responsePostBook(new RequestPostNewBook(bookTitle, author));
 
-        Response response = RequestSender.ResponsePostBook(new RequestPostNewBook(bookTitle, author));
-        assertEquals(STATUS_CODE_FOR_SUCCESS_POST, response.getStatusCode());
+        checkStatusCodePostBook(STATUS_CODE_FOR_SUCCESS_POST, actual);
     }
 }

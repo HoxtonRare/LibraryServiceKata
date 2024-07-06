@@ -2,9 +2,8 @@ package model.responses;
 
 import entity.Author;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
+import io.restassured.response.Response;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -15,6 +14,7 @@ public class ResponseGetAuthorsBooks {
     private String errorMessage;
     private String errorDetails;
     private List<Book> books;
+    private int statusCode;
 
     @Data
     public class Book {

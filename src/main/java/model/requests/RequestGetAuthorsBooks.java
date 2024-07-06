@@ -1,7 +1,6 @@
 package model.requests;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.restassured.response.Response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

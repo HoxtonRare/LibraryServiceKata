@@ -1,4 +1,4 @@
-package LibraryService;
+package preparingSteps.dataBase;
 
 import entity.Author;
 import entity.Book;
@@ -15,8 +15,9 @@ public class GenerateTestData {
         String firstName = randomAlphabetic(5, 15);
         String familyName = randomAlphabetic(5, 15);
         String secondName = randomAlphabetic(5, 15);
-        long id = RequestSender.ResponsePostAuthor(new RequestPostNewAuthor(firstName, familyName, secondName))
-                .as(ResponsePostNewAuthor.class).getAuthorId();
+        long id = RequestSender.responsePostAuthor(new RequestPostNewAuthor(firstName, familyName, secondName))
+                .getAuthorId();
+
         return new Author(id, firstName, familyName, secondName);
     }
 
@@ -26,13 +27,15 @@ public class GenerateTestData {
 
     public static long getBookId(Author author, String bookTitle) {
         RequestPostNewBook request = new RequestPostNewBook(bookTitle, author);
-        ResponsePostNewBook response = RequestSender.ResponsePostBook(request).as(ResponsePostNewBook.class);
-        return response.getBookId()+1;
+        ResponsePostNewBook response = RequestSender.responsePostBook(request);
+
+        return response.getBookId() + 1;
     }
 
     public static Book generateBookForAuthor(Author author) {
         String bookTitle = generateBookTitle();
         long id = getBookId(author, bookTitle);
+
         return new Book(id, bookTitle, author);
     }
 }
