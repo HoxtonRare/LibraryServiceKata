@@ -2,6 +2,7 @@ package LibraryService;
 
 import entity.Author;
 import model.requests.RequestPostNewBook;
+import model.responses.ResponseGetAuthorsBooks;
 import model.responses.ResponsePostNewBook;
 import preparingSteps.requests.RequestSender;
 import io.qameta.allure.Description;
@@ -25,6 +26,7 @@ public class TestLibraryServicePostRequest {
     private final int ERROR_CODE_FOR_NULL_POST = 1001;
     private final String ERROR_MESSAGE_FOR_INCORRECT_POST = "Указанный автор не существует в таблице";
     private final String ERROR_MESSAGE_FOR_NULL_TITLE_POST = "Не передан обязательный параметр: bookTitle";
+    private final String ERROR_MESSAGE_FOR_NULL_AUTHOR_POST = "Не передан обязательный параметр: author";
 
 
     @Test
@@ -60,5 +62,29 @@ public class TestLibraryServicePostRequest {
         checkStatusCodePostBook(STATUS_CODE_FOR_INCORRECT_POST, actual);
         checkErrorCodePostBook(ERROR_CODE_FOR_INCORRECT_POST, actual);
         checkErrorMessagePostBook(ERROR_MESSAGE_FOR_INCORRECT_POST, actual);
+    }
+
+    @Test
+    @DisplayName("Статус-код при добавлении новой книги без ввода author")
+    @Description("Получен код 400. Сервис возвращает код ошибки 1001 с описанием: “Не передан обязательный параметр: author")
+    public void testStatusCodePutAuthorsBooksWithNullAuthor() {
+        String title = generateBookTitle();
+        ResponsePostNewBook actual = RequestSender.responsePostBook(new RequestPostNewBook(title));
+
+        checkStatusCodePostBook(STATUS_CODE_FOR_NULL_POST, actual);
+        checkErrorMessagePostBook(ERROR_MESSAGE_FOR_NULL_AUTHOR_POST, actual);
+        checkErrorCodePostBook(ERROR_CODE_FOR_NULL_POST, actual);
+    }
+
+    @Test
+    @DisplayName("Статус-код при добавлении новой книги без ввода bookTitle")
+    @Description("Получен код 400. Сервис возвращает код ошибки 1001 с описанием: “Не передан обязательный параметр: bookTitle")
+    public void testStatusCodePutAuthorsBooksWithNullBookTitle() {
+        Author author = generateNewAuthor();
+        ResponsePostNewBook actual = RequestSender.responsePostBook(new RequestPostNewBook(author));
+
+        checkStatusCodePostBook(STATUS_CODE_FOR_NULL_POST, actual);
+        checkErrorMessagePostBook(ERROR_MESSAGE_FOR_NULL_TITLE_POST, actual);
+        checkErrorCodePostBook(ERROR_CODE_FOR_NULL_POST, actual);
     }
 }
