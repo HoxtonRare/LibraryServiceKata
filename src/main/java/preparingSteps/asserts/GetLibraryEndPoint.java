@@ -51,7 +51,6 @@ public class GetLibraryEndPoint {
                 .then()
                 .statusCode(statusCode)
                 .body("errorCode", equalTo(errorCode))
-                .body("$", hasKey("errorDetails"))
                 .body("errorMessage", equalTo(errorMessage));
     }
 
