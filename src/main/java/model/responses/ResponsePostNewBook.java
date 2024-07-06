@@ -10,4 +10,5 @@ public class ResponsePostNewBook {
     private int errorCode;
     private String errorMessage;
     private String errorDetails;
+    private int statusCode;
 }

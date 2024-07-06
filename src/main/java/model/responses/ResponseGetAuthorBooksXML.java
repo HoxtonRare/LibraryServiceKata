@@ -18,11 +18,12 @@ public class ResponseGetAuthorBooksXML {
     @XmlElement(name = "book")
     @XmlElementWrapper
     private List<Book> books;
+    private int statusCode;
 
     @Data
     @XmlRootElement(name = "book")
     @XmlAccessorType(XmlAccessType.FIELD)
-    public class Book {
+    public static class Book {
         private long id;
         @XmlElement(name = "book_title")
         private String bookTitle;

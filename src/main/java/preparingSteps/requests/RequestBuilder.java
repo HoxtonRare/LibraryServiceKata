@@ -1,5 +1,7 @@
 package preparingSteps.requests;
 
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import model.requests.RequestGetAuthorBooksXML;
 import model.requests.RequestGetAuthorsBooks;
 import model.requests.RequestPostNewAuthor;
@@ -15,7 +17,9 @@ public class RequestBuilder {
     public static RequestSpecBuilder createSpecBuilder() {
         return new RequestSpecBuilder()
                 .setBaseUri(BASE_URI)
-                .setContentType(ContentType.JSON);
+                .setContentType(ContentType.JSON)
+                .addFilter(new RequestLoggingFilter())
+                .addFilter(new ResponseLoggingFilter());
     }
 
     public static RequestSpecification postAuthorSpec(RequestPostNewAuthor request) {
