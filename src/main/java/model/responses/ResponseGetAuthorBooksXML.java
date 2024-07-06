@@ -3,7 +3,9 @@ package model.responses;
 import entity.Author;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.xml.bind.annotation.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -20,6 +22,8 @@ public class ResponseGetAuthorBooksXML {
     private List<Book> books;
     private int statusCode;
 
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Data
     @XmlRootElement(name = "book")
     @XmlAccessorType(XmlAccessType.FIELD)

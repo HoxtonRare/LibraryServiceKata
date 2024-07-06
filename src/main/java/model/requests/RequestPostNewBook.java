@@ -13,4 +13,12 @@ import lombok.NoArgsConstructor;
 public class RequestPostNewBook {
     private String bookTitle;
     private Author author;
+
+    public RequestPostNewBook(String bookTitle) {
+        this.bookTitle = bookTitle;
+    }
+
+    public RequestPostNewBook(Author author) {
+        this.author = author;
+    }
 }

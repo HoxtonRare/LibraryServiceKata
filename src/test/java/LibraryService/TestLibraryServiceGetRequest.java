@@ -6,6 +6,7 @@ import model.requests.RequestGetAuthorBooksXML;
 import model.requests.RequestGetAuthorsBooks;
 import model.responses.ResponseGetAuthorBooksXML;
 import model.responses.ResponseGetAuthorsBooks;
+import model.responses.ResponsePostNewBook;
 import preparingSteps.requests.RequestSender;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -14,9 +15,11 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static preparingSteps.asserts.GetLibraryEndPoint.*;
 import static preparingSteps.dataBase.GenerateTestData.*;
 
@@ -26,20 +29,27 @@ public class TestLibraryServiceGetRequest {
     private final int STATUS_CODE_FOR_SUCCESS_GET = 200;
     private final int STATUS_CODE_FOR_INCORRECT_GET = 400;
     private final int STATUS_CODE_FOR_NULL_GET = 400;
-    private final int ERROR_CODE_FOR_INCORRECT_GET = 1004;
+    private final String ERROR_CODE_FOR_INCORRECT_GET = "1004";
     private final String ERROR_MESSAGE_FOR_INCORRECT_GET = "Указанный автор не существует в таблице";
-    private final int ERROR_CODE_FOR_NULL_GET = 1001;
+    private final String ERROR_CODE_FOR_NULL_GET = "1001";
+    private final String ERROR_MESSAGE_FOR_NULL_GET = "Не передан id автора";
 
     @Test
     @DisplayName("Статус-код при GET запросе с существующим Author id. Позитивный кейс")
     @Description("Получен код 200 с одной книгой")
     public void testStatusCodeGetAuthorsBooksWithCorrectAuthorId() {
         Author author = generateNewAuthor();
-        Book book = generateBookForAuthor(author);
+        String bookTitle = generateBookTitle();
+        long bookId = getBookId(author, bookTitle);
+
+        ResponseGetAuthorsBooks expected = new ResponseGetAuthorsBooks();
+        expected.setBook(new ResponseGetAuthorsBooks.Book(bookId, bookTitle, author));
+        expected.setStatusCode(200);
+
         List<ResponseGetAuthorsBooks> actual = RequestSender
                 .responseGetBooks(new RequestGetAuthorsBooks(author.getId()));
 
-        checkStatusCode(STATUS_CODE_FOR_SUCCESS_GET, actual);
+        checkResponseBody(expected, actual);
     }
 
     @Test
@@ -49,6 +59,8 @@ public class TestLibraryServiceGetRequest {
         Author author = generateNewAuthor();
         List<ResponseGetAuthorsBooks> actual = RequestSender
                 .responseGetBooks(new RequestGetAuthorsBooks(author.getId()));
+        ResponseGetAuthorsBooks expected = new ResponseGetAuthorsBooks();
+        expected.setStatusCode(STATUS_CODE_FOR_SUCCESS_GET);
 
         checkStatusCode(STATUS_CODE_FOR_SUCCESS_GET, actual);
     }
@@ -58,10 +70,17 @@ public class TestLibraryServiceGetRequest {
     @Description("Получен код 200 с одной книгой в xml формате")
     public void testStatusCodeGetAuthorsBooksXmlWiltCorrectAuthorId() {
         Author author = generateNewAuthor();
-        Book book = generateBookForAuthor(author);
-        ResponseGetAuthorBooksXML actual = RequestSender.responseGetBooksXml(new RequestGetAuthorBooksXML(author));
+        String bookTitle = generateBookTitle();
+        long bookId = getBookId(author, bookTitle);
+        List <ResponseGetAuthorBooksXML.Book> expectedList = new ArrayList<>();
+        expectedList.add(new ResponseGetAuthorBooksXML.Book(bookId, bookTitle, author));
+        ResponseGetAuthorBooksXML expected = new ResponseGetAuthorBooksXML();
+        expected.setBooks(expectedList);
 
-        checkStatusCodeXml(STATUS_CODE_FOR_SUCCESS_GET, actual);
+        ResponseGetAuthorBooksXML actual = RequestSender.responseGetBooksXml(new RequestGetAuthorBooksXML(author));
+        expected.setStatusCode(STATUS_CODE_FOR_SUCCESS_GET);
+
+        checkResponseBody(expected, actual);
     }
 
     @Test
@@ -69,25 +88,18 @@ public class TestLibraryServiceGetRequest {
     @Description("Получен код 400. Сервис возвращает код ошибки 1004 с описанием: “Указанный автор не существует в таблице”")
     public void testStatusCodeGetAuthorsBooksWithIncorrectAuthorId() {
         Author author = generateNewUnregisteredAuthor();
-        List<ResponseGetAuthorsBooks> actual = RequestSender
-                .responseGetBooks(new RequestGetAuthorsBooks(author.getId()));
+        RequestGetAuthorsBooks request = new RequestGetAuthorsBooks(author.getId());
 
-        checkErrorCode(ERROR_CODE_FOR_INCORRECT_GET, actual);
-        checkErrorMessage(ERROR_MESSAGE_FOR_INCORRECT_GET, actual);
-        checkStatusCode(STATUS_CODE_FOR_INCORRECT_GET, actual);
-
+        checkErrorResponseBody(request, ERROR_CODE_FOR_INCORRECT_GET, ERROR_MESSAGE_FOR_INCORRECT_GET, STATUS_CODE_FOR_INCORRECT_GET);
     }
 
     @Test
     @DisplayName("Статус-код при GET запросе с отсутствием ввода обязательного параметра. Негативный кейс")
     @Description("Получен код 400. сервис возвращает код ошибки 1001")
     public void testStatusCodeGetAuthorBooksWithNullAuthorId() {
-        List<ResponseGetAuthorsBooks> actual = RequestSender
-                .responseGetBooks(new RequestGetAuthorsBooks());
-        System.out.println(actual.getFirst().getErrorMessage());
+        RequestGetAuthorsBooks request = new RequestGetAuthorsBooks();
 
-        checkErrorCode(ERROR_CODE_FOR_NULL_GET, actual);
-        checkStatusCode(STATUS_CODE_FOR_NULL_GET, actual);
+        checkErrorResponseBody(request, ERROR_CODE_FOR_NULL_GET, ERROR_MESSAGE_FOR_NULL_GET, STATUS_CODE_FOR_NULL_GET);
     }
 
     @Test
@@ -95,22 +107,19 @@ public class TestLibraryServiceGetRequest {
     @Description("Получен код 400. Сервис возвращает код ошибки 1004 с описанием: “Указанный автор не существует в таблице”")
     public void testStatusCodeGetAuthorsBooksXmlWithIncorrectAuthorId() {
         Author author = generateNewUnregisteredAuthor();
-        ResponseGetAuthorBooksXML actual = RequestSender
-                .responseGetBooksXml(new RequestGetAuthorBooksXML(author));
+        RequestGetAuthorBooksXML request = new RequestGetAuthorBooksXML(author);
 
-        checkErrorCodeXml(STATUS_CODE_FOR_INCORRECT_GET, actual);
-        checkErrorMessageXml(ERROR_MESSAGE_FOR_INCORRECT_GET, actual);
-        checkStatusCodeXml(STATUS_CODE_FOR_INCORRECT_GET, actual);
+        checkErrorResponseBodyXml(request, ERROR_CODE_FOR_INCORRECT_GET, ERROR_MESSAGE_FOR_INCORRECT_GET, STATUS_CODE_FOR_INCORRECT_GET);
     }
+
     @Test
     @DisplayName("Статус-код при GET запросе xml формата, c пустым author id. Негативный кейс")
     @Description("Получен код 400. сервис возвращает код ошибки 1001")
     public void testStatusCodeGetAuthorBooksXmlWithNullAuthorId() {
         Author author = new Author();
-        ResponseGetAuthorBooksXML actual = RequestSender
-                .responseGetBooksXml(new RequestGetAuthorBooksXML(author));
+        RequestGetAuthorBooksXML request = new RequestGetAuthorBooksXML(author);
 
-        checkErrorCodeXml(ERROR_CODE_FOR_INCORRECT_GET, actual);
-        checkStatusCodeXml(STATUS_CODE_FOR_NULL_GET, actual);
+        checkErrorResponseBodyXml(request, ERROR_CODE_FOR_NULL_GET, ERROR_MESSAGE_FOR_NULL_GET, STATUS_CODE_FOR_NULL_GET);
     }
+
 }

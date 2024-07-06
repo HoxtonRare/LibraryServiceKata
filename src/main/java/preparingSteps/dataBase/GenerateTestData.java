@@ -4,6 +4,8 @@ import entity.Author;
 import entity.Book;
 import model.requests.RequestPostNewAuthor;
 import model.requests.RequestPostNewBook;
+import model.responses.ResponseGetAuthorBooksXML;
+import model.responses.ResponseGetAuthorsBooks;
 import model.responses.ResponsePostNewAuthor;
 import model.responses.ResponsePostNewBook;
 import preparingSteps.requests.RequestSender;
@@ -29,14 +31,13 @@ public class GenerateTestData {
         RequestPostNewBook request = new RequestPostNewBook(bookTitle, author);
         ResponsePostNewBook response = RequestSender.responsePostBook(request);
 
-        return response.getBookId() + 1;
+        return response.getBookId()+1;
     }
 
-    public static Book generateBookForAuthor(Author author) {
+    public static ResponseGetAuthorsBooks.Book generateBookForAuthor(Author author) {
         String bookTitle = generateBookTitle();
         long id = getBookId(author, bookTitle);
-
-        return new Book(id, bookTitle, author);
+        return new ResponseGetAuthorsBooks.Book(id, bookTitle, author);
     }
 
     public static Author generateNewUnregisteredAuthor() {
