@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -21,5 +22,11 @@ public class Book {
     @ManyToOne
     @Column(name = "author_id", nullable = false)
     private Author author;
+    private LocalDate updated;
 
+    public Book(long id, String bookTitle, Author author) {
+        this.id = id;
+        this.bookTitle = bookTitle;
+        this.author = author;
+    }
 }

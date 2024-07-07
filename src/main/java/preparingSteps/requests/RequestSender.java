@@ -77,4 +77,16 @@ public class RequestSender {
 
         return responsePostNewBook;
     }
+
+    public static String responseGetToken() {
+
+        return given()
+                .spec(RequestBuilder.getTokenSpec())
+                .when()
+                .get()
+                .asString()
+                .substring(13)
+                .replaceAll("\"", "")
+                .replaceAll("}", "");
+    }
 }

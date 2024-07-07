@@ -64,4 +64,11 @@ public class GetLibraryEndPoint {
                 .body("errorCode", equalTo(errorCode))
                 .body("errorMessage", equalTo(errorMessage));
     }
+
+    public static void checkTemplate(List<String> updatedList) {
+        List<String> filteredList = updatedList.stream()
+                .filter(x -> x.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+\\+00:00"))
+                .toList();
+        assertEquals(updatedList, filteredList);
+    }
 }

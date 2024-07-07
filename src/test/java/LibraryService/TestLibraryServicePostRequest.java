@@ -56,7 +56,7 @@ public class TestLibraryServicePostRequest {
     public void testStatusCodePutAuthorsBookWithNullData() {
         RequestPostNewBook request = new RequestPostNewBook();
 
-        checkErrorResponseBody(request, ERROR_CODE_FOR_NULL_POST, ERROR_MESSAGE_FOR_NULL_AUTHOR_POST,
+        checkErrorResponseBody(request, ERROR_CODE_FOR_NULL_POST, ERROR_MESSAGE_FOR_NULL_TITLE_POST,
                 STATUS_CODE_FOR_NULL_POST, ERROR_DETAILS_FOR_NULL_POST);
     }
 

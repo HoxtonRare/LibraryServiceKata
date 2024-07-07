@@ -43,12 +43,16 @@ public class TestLibraryServiceGetRequest {
         long bookId = getBookId(author, bookTitle);
 
         ResponseGetAuthorsBooks expected = new ResponseGetAuthorsBooks();
-        expected.setBook(new ResponseGetAuthorsBooks.Book(bookId, bookTitle, author));
+        expected.setBook(new ResponseGetAuthorsBooks.Book(bookId, bookTitle, author, author.getBirthDate()));
         expected.setStatusCode(200);
 
         List<ResponseGetAuthorsBooks> actual = RequestSender
                 .responseGetBooks(new RequestGetAuthorsBooks(author.getId()));
+        List<String> listForCheckTemplate = new ArrayList<>();
+        actual.forEach(x -> listForCheckTemplate.add(x.getBook().getUpdated()));
+        actual.forEach(x -> x.getBook().setUpdated(null));
 
+        checkTemplate(listForCheckTemplate);
         checkResponseBody(expected, actual);
     }
 
@@ -73,13 +77,18 @@ public class TestLibraryServiceGetRequest {
         String bookTitle = generateBookTitle();
         long bookId = getBookId(author, bookTitle);
         List <ResponseGetAuthorBooksXML.Book> expectedList = new ArrayList<>();
-        expectedList.add(new ResponseGetAuthorBooksXML.Book(bookId, bookTitle, author));
+        expectedList.add(new ResponseGetAuthorBooksXML.Book(bookId, bookTitle, author, author.getBirthDate()));
         ResponseGetAuthorBooksXML expected = new ResponseGetAuthorBooksXML();
         expected.setBooks(expectedList);
 
         ResponseGetAuthorBooksXML actual = RequestSender.responseGetBooksXml(new RequestGetAuthorBooksXML(author));
         expected.setStatusCode(STATUS_CODE_FOR_SUCCESS_GET);
+        List<String> listForCheckTemplate = new ArrayList<>();
+        actual.getBooks().forEach(x -> listForCheckTemplate.add(x.getUpdated()));
+        actual.getBooks().forEach(x -> x.setUpdated(null));
 
+        System.out.println(listForCheckTemplate);
+        checkTemplate(listForCheckTemplate);
         checkResponseBody(expected, actual);
     }
 

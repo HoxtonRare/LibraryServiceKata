@@ -1,5 +1,8 @@
 package entity;
 
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +13,7 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@XmlAccessorType(XmlAccessType.NONE)
 public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -21,10 +25,6 @@ public class Author {
     private String familyName;
     @Column(name = "second_name", length = 50)
     private String secondName;
-
-    public Author(String firstName, String familyName, String secondName) {
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.familyName = familyName;
-    }
+    @Column(name = "birth_date", nullable = false)
+    private String birthDate;
 }

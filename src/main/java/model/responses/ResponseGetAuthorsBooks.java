@@ -28,5 +28,6 @@ public class ResponseGetAuthorsBooks {
         private long id;
         private String bookTitle;
         private Author author;
+        private String updated;
     }
 }
