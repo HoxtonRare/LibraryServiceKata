@@ -18,21 +18,13 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
+import static LibraryService.StatusCodesForTests.*;
 import static preparingSteps.asserts.GetLibraryEndPoint.*;
 import static preparingSteps.dataBase.GenerateTestData.*;
 
 @Epic("Получение статус кодов на запрос GET")
 @Story("Проверяются статус коды 200 и 400")
 public class TestLibraryServiceGetRequest {
-    private final int STATUS_CODE_FOR_SUCCESS_GET = 200;
-    private final int STATUS_CODE_FOR_INCORRECT_GET = 400;
-    private final int STATUS_CODE_FOR_NULL_GET = 400;
-    private final String ERROR_CODE_FOR_INCORRECT_GET = "1004";
-    private final String ERROR_MESSAGE_FOR_INCORRECT_GET = "Указанный автор не существует в таблице";
-    private final String ERROR_CODE_FOR_NULL_GET = "1001";
-    private final String ERROR_MESSAGE_FOR_NULL_GET = "Не передан id автора";
 
     @Test
     @DisplayName("Статус-код при GET запросе с существующим Author id. Позитивный кейс")
@@ -98,8 +90,9 @@ public class TestLibraryServiceGetRequest {
     public void testStatusCodeGetAuthorsBooksWithIncorrectAuthorId() {
         Author author = generateNewUnregisteredAuthor();
         RequestGetAuthorsBooks request = new RequestGetAuthorsBooks(author.getId());
+        Response response = RequestSender.getResponseForRequestGetBooks(request);
 
-        checkErrorResponseBody(request, ERROR_CODE_FOR_INCORRECT_GET, ERROR_MESSAGE_FOR_INCORRECT_GET, STATUS_CODE_FOR_INCORRECT_GET);
+        checkErrorResponseBody(response, ERROR_CODE_FOR_INCORRECT_GET, ERROR_MESSAGE_FOR_INCORRECT_GET, STATUS_CODE_FOR_INCORRECT_GET);
     }
 
     @Test
@@ -107,8 +100,10 @@ public class TestLibraryServiceGetRequest {
     @Description("Получен код 400. сервис возвращает код ошибки 1001")
     public void testStatusCodeGetAuthorBooksWithNullAuthorId() {
         RequestGetAuthorsBooks request = new RequestGetAuthorsBooks();
+        Response response = RequestSender.getResponseForRequestGetBooks(request);
 
-        checkErrorResponseBody(request, ERROR_CODE_FOR_NULL_GET, ERROR_MESSAGE_FOR_NULL_GET, STATUS_CODE_FOR_NULL_GET);
+
+        checkErrorResponseBody(response, ERROR_CODE_FOR_NULL_GET, ERROR_MESSAGE_FOR_NULL_GET, STATUS_CODE_FOR_NULL_GET);
     }
 
     @Test
@@ -117,8 +112,10 @@ public class TestLibraryServiceGetRequest {
     public void testStatusCodeGetAuthorsBooksXmlWithIncorrectAuthorId() {
         Author author = generateNewUnregisteredAuthor();
         RequestGetAuthorBooksXML request = new RequestGetAuthorBooksXML(author);
+        Response response = RequestSender.getResponseForRequestGetBooksXml(request);
 
-        checkErrorResponseBodyXml(request, ERROR_CODE_FOR_INCORRECT_GET, ERROR_MESSAGE_FOR_INCORRECT_GET, STATUS_CODE_FOR_INCORRECT_GET);
+
+        checkErrorResponseBody(response, ERROR_CODE_FOR_INCORRECT_GET, ERROR_MESSAGE_FOR_INCORRECT_GET, STATUS_CODE_FOR_INCORRECT_GET);
     }
 
     @Test
@@ -127,8 +124,10 @@ public class TestLibraryServiceGetRequest {
     public void testStatusCodeGetAuthorBooksXmlWithNullAuthorId() {
         Author author = new Author();
         RequestGetAuthorBooksXML request = new RequestGetAuthorBooksXML(author);
+        Response response = RequestSender.getResponseForRequestGetBooksXml(request);
 
-        checkErrorResponseBodyXml(request, ERROR_CODE_FOR_NULL_GET, ERROR_MESSAGE_FOR_NULL_GET, STATUS_CODE_FOR_NULL_GET);
+
+        checkErrorResponseBody(response, ERROR_CODE_FOR_NULL_GET, ERROR_MESSAGE_FOR_NULL_GET, STATUS_CODE_FOR_NULL_GET);
     }
 
 }
