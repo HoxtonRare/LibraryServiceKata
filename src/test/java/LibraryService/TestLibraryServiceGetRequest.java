@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static LibraryService.StatusCodesForTest.*;
 import static junit.framework.Assert.assertEquals;
 import static preparingSteps.asserts.GetLibraryEndPoint.*;
 import static preparingSteps.dataBase.GenerateTestData.*;
@@ -23,12 +24,7 @@ import static preparingSteps.dataBase.GenerateTestData.*;
 @Epic("Получение статус кодов на запрос GET")
 @Story("Проверяются статус коды 200 и 400")
 public class TestLibraryServiceGetRequest {
-    private final int STATUS_CODE_FOR_SUCCESS_GET = 200;
-    private final int STATUS_CODE_FOR_INCORRECT_GET = 400;
-    private final int STATUS_CODE_FOR_NULL_GET = 400;
-    private final int ERROR_CODE_FOR_INCORRECT_GET = 1004;
-    private final String ERROR_MESSAGE_FOR_INCORRECT_GET = "Указанный автор не существует в таблице";
-    private final int ERROR_CODE_FOR_NULL_GET = 1001;
+
 
     @Test
     @DisplayName("Статус-код при GET запросе с существующим Author id. Позитивный кейс")
