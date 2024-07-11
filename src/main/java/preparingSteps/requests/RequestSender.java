@@ -28,6 +28,13 @@ public class RequestSender {
         return responseGetAuthorBooksXML;
     }
 
+    public static Response getResponseForRequestGetBooksXml(RequestGetAuthorBooksXML request) {
+        return  given()
+                .spec(RequestBuilder.getAuthorBooksXmlSpec(request))
+                .when()
+                .get();
+    }
+
     public static List<ResponseGetAuthorsBooks> responseGetBooks(RequestGetAuthorsBooks request) {
         Response response = given()
                 .spec(RequestBuilder.getAuthorBooksSpec(request))
@@ -54,6 +61,13 @@ public class RequestSender {
         }
     }
 
+    public static Response getResponseForRequestGetBooks(RequestGetAuthorsBooks request) {
+        return  given()
+                .spec(RequestBuilder.getAuthorBooksSpec(request))
+                .when()
+                .get();
+    }
+
     public static ResponsePostNewAuthor responsePostAuthor(RequestPostNewAuthor request) {
         Response response = given()
                 .spec(RequestBuilder.postAuthorSpec(request))
@@ -76,5 +90,12 @@ public class RequestSender {
         responsePostNewBook.setStatusCode(response.getStatusCode());
 
         return responsePostNewBook;
+    }
+
+    public static Response getResponseForRequestPostBook(RequestPostNewBook request) {
+        return given()
+                .spec(RequestBuilder.postAuthorBookSpec(request))
+                .when()
+                .post();
     }
 }

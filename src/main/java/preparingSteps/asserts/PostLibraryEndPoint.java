@@ -1,5 +1,6 @@
 package preparingSteps.asserts;
 
+import io.restassured.response.Response;
 import model.requests.RequestGetAuthorsBooks;
 import model.requests.RequestPostNewBook;
 import model.responses.ResponsePostNewAuthor;
@@ -16,27 +17,8 @@ public class PostLibraryEndPoint {
         assertEquals(expected, actual.getStatusCode());
     }
 
-    public static void checkStatusCodePostAuthor(int expected, ResponsePostNewAuthor actual) {
-        assertEquals(expected, actual.getStatusCode());
-    }
-
-    public static void checkErrorCodePostBook(int expected, ResponsePostNewBook actual) {
-        assertEquals(expected, actual.getErrorCode());
-    }
-
-    public static void checkErrorMessagePostBook(String expected, ResponsePostNewBook actual) {
-        assertEquals(expected, actual.getErrorMessage());
-    }
-
-    public static void checkErrorDetailsPostBook(String expected, ResponsePostNewBook actual) {
-        assertEquals(expected, actual.getErrorDetails());
-    }
-
-    public static void checkErrorResponseBody(RequestPostNewBook request, String errorCode, String errorMessage, int statusCode, String errorDetails) {
-        given()
-                .spec(RequestBuilder.postAuthorBookSpec(request))
-                .when()
-                .post()
+    public static void checkErrorResponseBody(Response response, String errorCode, String errorMessage, int statusCode, String errorDetails) {
+        response
                 .then()
                 .statusCode(statusCode)
                 .body("errorCode", equalTo(errorCode))
