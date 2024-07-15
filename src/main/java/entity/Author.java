@@ -17,14 +17,14 @@ import javax.persistence.*;
 public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    @XmlElement(name = "id")
     private long id;
-    @Column(name = "first_name", nullable = false, length = 50)
+    @XmlElement(name = "first_name")
     private String  firstName;
-    @Column(name = "family_name", nullable = false, length = 50)
+    @XmlElement(name = "family_name")
     private String familyName;
-    @Column(name = "second_name", length = 50)
+    @XmlElement(name = "second_name")
     private String secondName;
-    @Column(name = "birth_date", nullable = false)
+    @XmlElement(name = "birth_date")
     private String birthDate;
 }

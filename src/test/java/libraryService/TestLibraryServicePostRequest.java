@@ -1,8 +1,7 @@
-package LibraryService;
+package libraryService;
 
 import entity.Author;
 import model.requests.RequestPostNewBook;
-import model.responses.ResponsePostNewAuthor;
 import model.responses.ResponsePostNewBook;
 import preparingSteps.requests.RequestSender;
 import io.qameta.allure.Description;
@@ -12,11 +11,10 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static LibraryService.StatusCodesForTests.*;
+import static libraryService.StatusCodesForTests.*;
 import static preparingSteps.asserts.GetLibraryEndPoint.checkResponseBody;
 import static preparingSteps.asserts.PostLibraryEndPoint.*;
 import static preparingSteps.dataBase.GenerateTestData.*;
-import static junit.framework.Assert.assertEquals;
 
 @Epic("Получение статус кодов на запрос POST")
 @Story("Проверяются статус коды 200, 400 и 409")

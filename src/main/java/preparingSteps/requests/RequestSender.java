@@ -32,7 +32,7 @@ public class RequestSender {
         return  given()
                 .spec(RequestBuilder.getAuthorBooksXmlSpec(request))
                 .when()
-                .get();
+                .post();
     }
 
     public static List<ResponseGetAuthorsBooks> responseGetBooks(RequestGetAuthorsBooks request) {

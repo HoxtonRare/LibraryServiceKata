@@ -31,6 +31,7 @@ public class ResponseGetAuthorBooksXML {
         private long id;
         @XmlElement(name = "book_title")
         private String bookTitle;
+        @XmlElement(name = "author")
         private Author author;
         private String updated;
     }

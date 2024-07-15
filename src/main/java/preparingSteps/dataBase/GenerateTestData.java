@@ -1,18 +1,14 @@
 package preparingSteps.dataBase;
 
 import entity.Author;
-import entity.Book;
 import model.requests.RequestPostNewAuthor;
 import model.requests.RequestPostNewBook;
-import model.responses.ResponseGetAuthorBooksXML;
 import model.responses.ResponseGetAuthorsBooks;
-import model.responses.ResponsePostNewAuthor;
 import model.responses.ResponsePostNewBook;
 import preparingSteps.requests.RequestSender;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Random;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 

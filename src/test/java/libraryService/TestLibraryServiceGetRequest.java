@@ -1,12 +1,12 @@
-package LibraryService;
+package libraryService;
 
 import entity.Author;
-import entity.Book;
 import model.requests.RequestGetAuthorBooksXML;
 import model.requests.RequestGetAuthorsBooks;
 import model.responses.ResponseGetAuthorBooksXML;
 import model.responses.ResponseGetAuthorsBooks;
-import model.responses.ResponsePostNewBook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import preparingSteps.requests.RequestSender;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -18,13 +18,15 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static LibraryService.StatusCodesForTests.*;
+import static libraryService.StatusCodesForTests.*;
 import static preparingSteps.asserts.GetLibraryEndPoint.*;
 import static preparingSteps.dataBase.GenerateTestData.*;
 
 @Epic("Получение статус кодов на запрос GET")
 @Story("Проверяются статус коды 200 и 400")
 public class TestLibraryServiceGetRequest {
+
+    private static final Logger log = LoggerFactory.getLogger(TestLibraryServiceGetRequest.class);
 
     @Test
     @DisplayName("Статус-код при GET запросе с существующим Author id. Позитивный кейс")
@@ -79,7 +81,6 @@ public class TestLibraryServiceGetRequest {
         actual.getBooks().forEach(x -> listForCheckTemplate.add(x.getUpdated()));
         actual.getBooks().forEach(x -> x.setUpdated(null));
 
-        System.out.println(listForCheckTemplate);
         checkTemplate(listForCheckTemplate);
         checkResponseBody(expected, actual);
     }

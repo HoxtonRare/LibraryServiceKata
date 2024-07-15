@@ -3,13 +3,9 @@ package model.responses;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import entity.Author;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import entity.Book;
-import io.restassured.response.Response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
