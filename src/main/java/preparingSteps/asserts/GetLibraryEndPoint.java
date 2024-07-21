@@ -1,5 +1,6 @@
 package preparingSteps.asserts;
 
+import entity.Book;
 import io.restassured.response.Response;
 import model.responses.ResponseGetAuthorsBooks;
 
@@ -30,5 +31,8 @@ public class GetLibraryEndPoint {
                 .filter(x -> x.matches("\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d+\\+00:00"))
                 .toList();
         assertEquals(updatedList, filteredList);
+    }
+    public static void checkNumberOfBooks(int expected, List<Book> books) {
+        assertEquals(expected, books.size());
     }
 }
