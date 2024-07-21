@@ -23,9 +23,7 @@ public class ExecutionRequest {
     }
 
     public List<Book> findAll() {
-        String hql = """
-                FROM Book
-                """;
+        String hql = "FROM Book";
 
         return session.createQuery(hql, Book.class)
                 .getResultList();
