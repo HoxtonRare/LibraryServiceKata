@@ -1,8 +1,13 @@
 package libraryService;
 
 import entity.Author;
+import entity.Book;
 import model.requests.RequestPostNewBook;
 import model.responses.ResponsePostNewBook;
+import org.junit.jupiter.api.BeforeEach;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import preparingSteps.dataBase.ExecutionRequest;
 import preparingSteps.requests.RequestSender;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
@@ -11,7 +16,12 @@ import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static libraryService.StatusCodesForTests.*;
+import static preparingSteps.asserts.GetLibraryEndPoint.checkDataBase;
 import static preparingSteps.asserts.GetLibraryEndPoint.checkResponseBody;
 import static preparingSteps.asserts.PostLibraryEndPoint.*;
 import static preparingSteps.dataBase.GenerateTestData.*;
@@ -20,16 +30,27 @@ import static preparingSteps.dataBase.GenerateTestData.*;
 @Story("Проверяются статус коды 200, 400 и 409")
 public class TestLibraryServicePostRequest {
 
+    private static final Logger log = LoggerFactory.getLogger(TestLibraryServiceGetRequest.class);
+    private static final ExecutionRequest exe = new ExecutionRequest();
+
+    @BeforeEach
+    public void cleanDataBase() {
+        exe.deleteAll();
+    }
+
     @Test
     @DisplayName("Статус-код, при добавлении новой книги с существующим Author id")
     @Description("Получен код 201, книга добавлена")
     public void testStatusCodePutAuthorsBookWithCorrectData() {
         Author author = generateNewAuthor();
         String bookTitle = generateBookTitle();
+        Timestamp updated = Timestamp.valueOf(LocalDateTime.now());
 
         ResponsePostNewBook expected = new ResponsePostNewBook();
         expected.setStatusCode(STATUS_CODE_FOR_SUCCESS_POST);
-        expected.setBookId(getBookId(author, bookTitle));
+        expected.setBookId(getBookId(author, bookTitle, updated));
+        List<Book> expectedDataBase = generateExpectedList(expected.getBookId(), bookTitle, author.getId(), updated);
+        List<Book> actualDataBase = exe.findAll();
 
         ResponsePostNewBook actual = RequestSender.responsePostBook(new RequestPostNewBook(bookTitle, author));
 
@@ -37,6 +58,7 @@ public class TestLibraryServicePostRequest {
 
         checkStatusCodePostBook(STATUS_CODE_FOR_SUCCESS_POST, actual);
         checkResponseBody(expected, actual);
+        checkDataBase(expectedDataBase, actualDataBase);
     }
 
     @Test

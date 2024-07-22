@@ -8,6 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import preparingSteps.dataBase.ExecutionRequest;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static preparingSteps.asserts.GetLibraryEndPoint.*;
@@ -27,8 +29,9 @@ public class TestDataBase {
 
         String bookTitle1 = generateBookTitle();
         String bookTitle2 = generateBookTitle();
-        executionRequest.insertBook(bookTitle1, (long) 1);
-        executionRequest.insertBook(bookTitle2, (long) 2);
+        Timestamp updated = Timestamp.valueOf(LocalDateTime.now());
+        executionRequest.insertBook(bookTitle1, (long) 1, updated);
+        executionRequest.insertBook(bookTitle2, (long) 2, updated);
 
         List<Book> books = executionRequest.findAll();
         System.out.println(books);

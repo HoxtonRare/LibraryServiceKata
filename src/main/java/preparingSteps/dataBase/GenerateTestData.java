@@ -1,18 +1,23 @@
 package preparingSteps.dataBase;
 
 import entity.Author;
+import entity.Book;
 import model.requests.RequestPostNewAuthor;
 import model.requests.RequestPostNewBook;
-import model.responses.ResponseGetAuthorsBooks;
-import model.responses.ResponsePostNewBook;
 import preparingSteps.requests.RequestSender;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public class GenerateTestData {
+
+    private static final ExecutionRequest executionRequest = new ExecutionRequest();
+
     public static Author generateNewAuthor() {
         String firstName = randomAlphabetic(5, 15);
         String familyName = randomAlphabetic(5, 15);
@@ -30,18 +35,12 @@ public class GenerateTestData {
         return randomAlphabetic(5, 20);
     }
 
-    public static long getBookId(Author author, String bookTitle) {
+    public static long getBookId(Author author, String bookTitle, Timestamp updated) {
         RequestPostNewBook request = new RequestPostNewBook(bookTitle, author);
-        ResponsePostNewBook response = RequestSender.responsePostBook(request);
+        executionRequest.insertBook(bookTitle, author.getId(), updated);
+        List<Book> books = executionRequest.findBookByTitle(bookTitle);
 
-        return response.getBookId()+1;
-    }
-
-    public static ResponseGetAuthorsBooks.Book generateBookForAuthor(Author author) {
-        String bookTitle = generateBookTitle();
-        long id = getBookId(author, bookTitle);
-
-        return new ResponseGetAuthorsBooks.Book(id, bookTitle, author, author.getBirthDate());
+        return books.getFirst().getId()+1;
     }
 
     public static Author generateNewUnregisteredAuthor() {
@@ -49,5 +48,11 @@ public class GenerateTestData {
         author.setId(generateNewAuthor().getId() + 1);
 
         return author;
+    }
+
+    public static List<Book> generateExpectedList(long bookId, String bookTitle, long authorId, Timestamp updated) {
+        List<Book> expected = new ArrayList<>();
+        expected.addFirst(new Book(bookId-1, bookTitle, authorId, updated));
+        return expected;
     }
 }

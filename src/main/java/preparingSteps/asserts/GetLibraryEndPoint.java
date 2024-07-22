@@ -32,7 +32,12 @@ public class GetLibraryEndPoint {
                 .toList();
         assertEquals(updatedList, filteredList);
     }
+
     public static void checkNumberOfBooks(int expected, List<Book> books) {
         assertEquals(expected, books.size());
+    }
+
+    public static void checkDataBase (List<Book> expected, List<Book> actual) {
+        assertEquals(expected, actual);
     }
 }

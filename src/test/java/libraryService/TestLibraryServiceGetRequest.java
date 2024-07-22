@@ -1,20 +1,25 @@
 package libraryService;
 
 import entity.Author;
+import entity.Book;
+import io.restassured.response.Response;
 import model.requests.RequestGetAuthorBooksXML;
 import model.requests.RequestGetAuthorsBooks;
 import model.responses.ResponseGetAuthorBooksXML;
 import model.responses.ResponseGetAuthorsBooks;
+import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import preparingSteps.dataBase.ExecutionRequest;
 import preparingSteps.requests.RequestSender;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Story;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +32,12 @@ import static preparingSteps.dataBase.GenerateTestData.*;
 public class TestLibraryServiceGetRequest {
 
     private static final Logger log = LoggerFactory.getLogger(TestLibraryServiceGetRequest.class);
+    private static final ExecutionRequest exe = new ExecutionRequest();
+
+    @BeforeEach
+    public void cleanDataBase() {
+        exe.deleteAll();
+    }
 
     @Test
     @DisplayName("Статус-код при GET запросе с существующим Author id. Позитивный кейс")
@@ -34,7 +45,8 @@ public class TestLibraryServiceGetRequest {
     public void testStatusCodeGetAuthorsBooksWithCorrectAuthorId() {
         Author author = generateNewAuthor();
         String bookTitle = generateBookTitle();
-        long bookId = getBookId(author, bookTitle);
+        Timestamp updated = Timestamp.valueOf(LocalDateTime.now());
+        long bookId = getBookId(author, bookTitle, updated);
 
         ResponseGetAuthorsBooks expected = new ResponseGetAuthorsBooks();
         expected.setBook(new ResponseGetAuthorsBooks.Book(bookId, bookTitle, author, author.getBirthDate()));
@@ -42,12 +54,17 @@ public class TestLibraryServiceGetRequest {
 
         List<ResponseGetAuthorsBooks> actual = RequestSender
                 .responseGetBooks(new RequestGetAuthorsBooks(author.getId()));
+
         List<String> listForCheckTemplate = new ArrayList<>();
         actual.forEach(x -> listForCheckTemplate.add(x.getBook().getUpdated()));
         actual.forEach(x -> x.getBook().setUpdated(null));
 
+        List<Book> actualDataBase = exe.findAll();
+        List<Book> expectedList = generateExpectedList(bookId, bookTitle, author.getId(), updated);
+
         checkTemplate(listForCheckTemplate);
         checkResponseBody(expected, actual);
+        checkDataBase(expectedList, actualDataBase);
     }
 
     @Test
@@ -59,7 +76,10 @@ public class TestLibraryServiceGetRequest {
                 .responseGetBooks(new RequestGetAuthorsBooks(author.getId()));
         ResponseGetAuthorsBooks expected = new ResponseGetAuthorsBooks();
         expected.setStatusCode(STATUS_CODE_FOR_SUCCESS_GET);
+        List<Book> actualDataBase = exe.findAll();
+        List<Book> expectedList = new ArrayList<>();
 
+        checkDataBase(expectedList, actualDataBase);
         checkStatusCode(STATUS_CODE_FOR_SUCCESS_GET, actual);
     }
 
@@ -69,7 +89,10 @@ public class TestLibraryServiceGetRequest {
     public void testStatusCodeGetAuthorsBooksXmlWiltCorrectAuthorId() {
         Author author = generateNewAuthor();
         String bookTitle = generateBookTitle();
-        long bookId = getBookId(author, bookTitle);
+        Timestamp updated = Timestamp.valueOf(LocalDateTime.now());
+        long bookId = getBookId(author, bookTitle, updated);
+        List<Book> expectedDataBase = generateExpectedList(bookId, bookTitle, author.getId(), updated);
+
         List <ResponseGetAuthorBooksXML.Book> expectedList = new ArrayList<>();
         expectedList.add(new ResponseGetAuthorBooksXML.Book(bookId, bookTitle, author, author.getBirthDate()));
         ResponseGetAuthorBooksXML expected = new ResponseGetAuthorBooksXML();
@@ -81,8 +104,11 @@ public class TestLibraryServiceGetRequest {
         actual.getBooks().forEach(x -> listForCheckTemplate.add(x.getUpdated()));
         actual.getBooks().forEach(x -> x.setUpdated(null));
 
+        List<Book> actualDataBase = exe.findAll();
+
         checkTemplate(listForCheckTemplate);
         checkResponseBody(expected, actual);
+        checkDataBase(expectedDataBase, actualDataBase);
     }
 
     @Test

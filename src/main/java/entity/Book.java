@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -21,7 +22,7 @@ public class Book {
     @Column(name = "author_id", nullable = false)
     private long authorId;
     @Column(name = "updated")
-    private String updated;
+    private Timestamp updated;
 
     public Book(long id, String bookTitle, long authorId) {
         this.id = id;

@@ -2,7 +2,7 @@ package model.requests;
 
 import entity.Author;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.xml.bind.annotation.*;
+import javax.xml.bind.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -4,6 +4,7 @@ import entity.Book;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class ExecutionRequest {
@@ -29,13 +30,14 @@ public class ExecutionRequest {
                 .getResultList();
     }
 
-    public void insertBook(String bookTitle, Long authorId) {
-        String hql = "INSERT INTO Book (book_title, author_id) VALUES(:bookTitle, :authorId)";
+    public void insertBook(String bookTitle, Long authorId, Timestamp updated) {
+        String hql = "INSERT INTO Book (book_title, author_id, updated) VALUES(:bookTitle, :authorId, :updated)";
 
         Transaction tr = session.beginTransaction();
         session.createNativeQuery(hql, Book.class)
                 .setParameter("bookTitle", bookTitle)
                 .setParameter("authorId", authorId)
+                .setParameter("updated", updated)
                 .executeUpdate();
         tr.commit();
 
